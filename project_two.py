@@ -33,43 +33,60 @@ inventory = []
 rooms = {
 
             'Hall' : {
-                  'south' : 'Kitchen'
+                  'south' : 'Kitchen',
+                  'east' : 'Dining Room',
+                  'north' : 'media Room',
+                  'west' : 'Living Room',                  
+                  'item' : 'key'
                 },
 
             'Kitchen' : {
-                  'north' : 'Hall'
+                  'north' : 'Hall',
+                  'item' : ['monster', 'wand']
                 },
+
             'Dining Room' : {
-              'west' : 'Hall'
+              'west' : 'Hall',
+              'east' : 'Bedroom 2',
+              'north' : 'Bathroom 1',
+              'south' : 'Bedroom 1',
+              'item' : ['potion', 'health']
+
             },
 
             'Living Room' : {
-              'east' : 'Hall'
+              'east' : 'Hall',
+              'item' : ['gold', 'treasure box']
             },
 
             'Media Room' : {
-              'north' : 'Hall'
+              'south' : 'Hall',
+              'west' : 'Bedroom 3'
+      
             },
 
             'Bathroom 1' : {
-              'north' : 'Living Room'
+              'south' : 'Dining Room',
+              'item' : ['gun', 'map', 'chocolate']
+
             },
 
             'Bedroom 1' : {
-              'south' : 'Living Room'
+              'north' : 'Dining Room'
             },
 
             'Bedroom 2' : {
-              'east' : 'Living Room'
+              'west' : 'Dining Room'
             },
 
             'Bedroom 3' : {
-              'west' : 'Media Room'
+              'east' : 'Media Room',
+              'north' : 'Bathroom 2'
 
             },
 
             'Bathroom 2' : {
-              'north' : 'Bedroom 3'
+              'south' : 'Bedroom 3'
             }
 
 
@@ -122,4 +139,18 @@ while True:
         else:
             #tell them they can't get it
             print('Can\'t get ' + move[1] + '!')
+
+                ## If a player enters a room with a monster
+    if 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
+        print('A monster has got you... GAME OVER!')
+        break
+
+          ## Define how a player can win
+    if currentRoom == 'Bedroom 1' and 'key' in inventory and 'potion' in inventory and 'gold' in inventory:
+        print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
+        break
+
+
+
+
 
