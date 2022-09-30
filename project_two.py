@@ -33,65 +33,68 @@ inventory = []
 rooms = {
 
             'Hall' : {
-                  'south' : 'Kitchen',
+                  'south': 'Kitchen',
                   'east' : 'Dining Room',
-                  'north' : 'media Room',
-                  'west' : 'Living Room',                  
+                  'west' : 'Living Room',
+                  'north': 'Media Room',
                   'item' : 'key'
+                  
                 },
 
             'Kitchen' : {
-                  'north' : 'Hall',
-                  'item' : ['monster', 'wand']
+                  'north': 'Hall',
+                  'item' : 'monster'
                 },
 
             'Dining Room' : {
-              'west' : 'Hall',
-              'east' : 'Bedroom 2',
-              'north' : 'Bathroom 1',
-              'south' : 'Bedroom 1',
-              'item' : ['potion', 'health']
+                  'west' : 'Hall',
+                  'north' : 'Bathroom one',
+                  'item' : 'potion'
+             },
 
-            },
-
-            'Living Room' : {
+             'Living Room' : {
               'east' : 'Hall',
-              'item' : ['gold', 'treasure box']
-            },
+              'item' :'gold'
 
-            'Media Room' : {
-              'south' : 'Hall',
-              'west' : 'Bedroom 3'
-      
-            },
+             },
 
-            'Bathroom 1' : {
+             'Media Room' : {
+              'south' : 'Hall'
+              
+             },
+
+             'Bathroom one' : {
               'south' : 'Dining Room',
-              'item' : ['gun', 'map', 'chocolate']
+              'west' : 'Bedroom one',
+              'east' : 'Bedroom two',
+              'item' : 'map'
+             },
 
-            },
+             'Bedroom one' : {
+              'east' : 'Bathroom one',
+              'item' : 'wand'
+              
+              },
 
-            'Bedroom 1' : {
-              'north' : 'Dining Room'
-            },
+              'Bedroom two' : {
+                'west' : 'Bathroom one',
+                'north' : 'Bathroom two',
+                'item'  : 'health'
+              },
 
-            'Bedroom 2' : {
-              'west' : 'Dining Room'
-            },
+              'Bathroom two' : {
+                'north' : 'Bedroom two',
+                'south' : 'Sun Room'
 
-            'Bedroom 3' : {
-              'east' : 'Media Room',
-              'north' : 'Bathroom 2'
+              },
 
-            },
+              'Sun Room' : {
+                'north' : 'Sun Room'
+ }
+            
 
-            'Bathroom 2' : {
-              'south' : 'Bedroom 3'
-            }
-
-
-
-         }
+             
+             }
 
 # start the player in the Hall
 currentRoom = 'Hall'
@@ -145,12 +148,16 @@ while True:
         print('A monster has got you... GAME OVER!')
         break
 
+    if 'item' in rooms[currentRoom] and 'key' in rooms[currentRoom]['item']:
+        print('You Win!')
+        break
           ## Define how a player can win
-    if currentRoom == 'Bedroom 1' and 'key' in inventory and 'potion' in inventory and 'gold' in inventory:
+    if currentRoom == 'Sun Room' and 'key' in inventory and 'gold' in inventory:
         print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
         break
 
 
 
+      
 
 
