@@ -1,35 +1,37 @@
-#!/usr/bin/python3
-"""Driving a simple game framework with
-   a dictionary object | Alta3 Research"""
+#!/usr/bin/ env python3
+
+import crayons
 
 def showInstructions():
-    """Show the game instructions when called"""
+    """Game intsructions for user to follow"""
     #print a main menu and the commands
-    print('''
+    print(crayons.green('''
     RPG Game
     ========
     Commands:
-      go [direction]
-      get [item]
-    ''')
+    go [direction]
+    get [item]
+    '''))
 
 def showStatus():
     """determine the current status of the player"""
     # print the player's current location
     print('---------------------------')
-    print('You are in the ' + currentRoom)
-    # print what the player is carrying
-    print('Inventory:', inventory)
-    # check if there's an item in the room, if so print it
+    print(crayons.green('You are in the ' + currentRoom))
+    
+    #prints item the player has
+    print(crayons.blue('Inventory:', inventory))
+    # Print item in current room
     if "item" in rooms[currentRoom]:
-      print('You see a ' + rooms[currentRoom]['item'])
+      print(crayons.red('You see a ' + rooms[currentRoom]['item']))
+      
     print("---------------------------")
 
 
-# an inventory, which is initially empty
+# list of inventory which is empty
 inventory = []
 
-# a dictionary linking a room to other rooms
+# a dictionary of all the rooms which are linked together
 rooms = {
 
             'Hall' : {
@@ -38,7 +40,6 @@ rooms = {
                   'west' : 'Living Room',
                   'north': 'Media Room',
                   'item' : 'key'
-                  
                 },
 
             'Kitchen' : {
@@ -88,13 +89,27 @@ rooms = {
 
               },
 
-              'Sun Room' : {
-                'north' : 'Sun Room'
- }
-            
+              'Sun Room': {
+                'north' : 'Bathroom two',
+                 'west' : 'Office'
+              },
 
-             
-             }
+              'Office' : {
+                'east' : 'Sun Room',
+                'north': 'Room with Trap Door'
+
+              },
+
+              'Room with Trap Door' : {
+                'east' : 'Tunnel'
+              },
+
+              'Tunnel' : {
+                'west' : 'Room with Trap Door',
+                'item' : 'teleport'
+
+              }
+        }
 
 # start the player in the Hall
 currentRoom = 'Hall'
@@ -105,26 +120,22 @@ showInstructions()
 while True:
     showStatus()
 
-    # the player MUST type something in
-    # otherwise input will keep asking
+    #player input
     move = ''
     while move == '':  
         move = input('>')
 
-    # normalizing input:
-    # .lower() makes it lower case, .split() turns it to a list
-    # therefore, "get golden key" becomes ["get", "golden key"]          
+    # .lower() to convert input into lowercase and .split() to turn it into a list      
     move = move.lower().split(" ", 1)
 
     #if they type 'go' first
     if move[0] == 'go':
-        #check that they are allowed wherever they want to go
         if move[1] in rooms[currentRoom]:
             #set the current room to the new room
             currentRoom = rooms[currentRoom][move[1]]
-        # if they aren't allowed to go that way:
+       
         else:
-            print('You can\'t go that way!')
+            print(crayons.red('You can\'t go that way!'))
 
     #if they type 'get' first
     if move[0] == 'get' :
@@ -135,28 +146,33 @@ while True:
             #add the item to their inventory
             inventory.append(move[1])
             #display a helpful message
-            print(move[1] + ' got!')
+            print(crayons.green(move[1] + ' got!'))
             #delete the item key:value pair from the room's dictionary
             del rooms[currentRoom]['item']
-        # if there's no item in the room or the item doesn't match
         else:
             #tell them they can't get it
-            print('Can\'t get ' + move[1] + '!')
+            print(crayons.red('Can\'t get ' + move[1] + '!'))
 
-                ## If a player enters a room with a monster
+     #shows how a player can lose
     if 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
-        print('A monster has got you... GAME OVER!')
-        break
+        print(crayons.red('A monster has got you... GAME OVER!'))
+        break 
 
-    if 'item' in rooms[currentRoom] and 'key' in rooms[currentRoom]['item']:
-        print('You Win!')
-        break
-          ## Define how a player can win
+          #shows how a player wins
     if currentRoom == 'Sun Room' and 'key' in inventory and 'gold' in inventory:
-        print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
+        print(crayons.red('You escaped the house with the ultra rare key and magic potion... YOU WIN!'))
         break
+      
+    #shows how a player can move to any room from their current location
+    if currentRoom == 'Tunnel' and 'teleport' in inventory:
+        
+        #prints a list of all the rooms
+        print(crayons.red(rooms.keys()))
 
-
+        #user input to choose a room they want to move to 
+        choice = input(crayons.green("Choose a room: "))
+        currentRoom = choice
+  
 
       
 
